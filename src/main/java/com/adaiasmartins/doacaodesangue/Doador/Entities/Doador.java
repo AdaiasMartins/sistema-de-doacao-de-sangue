@@ -29,6 +29,7 @@ public class Doador {
     private String endereco;
     private String cidade;
     private String estado;
+    private boolean ativo = true;
 
     public Doador(CadastrarDoadorDTO data){
         this.nome = data.nome();
