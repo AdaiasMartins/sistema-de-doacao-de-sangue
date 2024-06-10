@@ -2,6 +2,7 @@ package com.adaiasmartins.doacaodesangue.Doador.Entities;
 
 import com.adaiasmartins.doacaodesangue.Doador.DTOs.CadastrarDoadorDTO;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -29,6 +30,7 @@ public class Doador {
     private String endereco;
     private String cidade;
     private String estado;
+    private boolean ativo = true;
 
     public Doador(CadastrarDoadorDTO data){
         this.nome = data.nome();
