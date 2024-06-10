@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RepositorioDeDoacoes extends JpaRepository<Doacao, Long> {
 
-        Doacao findByID(Long id);
+        Doacao findById(long id);
 }

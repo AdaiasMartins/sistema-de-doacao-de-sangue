@@ -4,9 +4,12 @@ import com.adaiasmartins.doacaodesangue.Doacao.DTOs.CriarDoacaoDTO;
 import com.adaiasmartins.doacaodesangue.Doacao.Entities.Doacao;
 import com.adaiasmartins.doacaodesangue.Doacao.Exceptions.DoacaoNaoEncontradaException;
 import com.adaiasmartins.doacaodesangue.Doacao.Repositories.RepositorioDeDoacoes;
+import com.adaiasmartins.doacaodesangue.Doador.Entities.Doador;
 import com.adaiasmartins.doacaodesangue.Doador.Exceptions.DoadorNaoEncontradoException;
 import com.adaiasmartins.doacaodesangue.Doador.Repositories.RepositorioDeDoadores;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class DoacaoService {
@@ -14,12 +17,13 @@ public class DoacaoService {
     private RepositorioDeDoadores repositorioDeDoadores;
     private RepositorioDeDoacoes repositorioDeDoacoes;
 
-    public Doacao criarDoacao(CriarDoacaoDTO data) throws Exception {
+    public Doacao criarDoacao(String cpf, CriarDoacaoDTO data) throws Exception {
         try {
-            if (repositorioDeDoadores.findByCpf(data.cpfDoador()) == null) {
+            if(repositorioDeDoadores.findByCpf(data.cpfDoador()) == null){
                 throw new DoadorNaoEncontradoException("Doador não encontrado");
             }
-            Doacao doacao = new Doacao(data);
+            Doador doador = repositorioDeDoadores.findByCpf(data.cpfDoador());
+            Doacao doacao = new Doacao(doador, data.data(), data.tipoSanguineo(), data.quantidadeDoada(), data.local());
             return repositorioDeDoacoes.save(doacao);
         } catch (Exception e) {
             throw new Exception("Erro ao criar doação");
@@ -28,11 +32,12 @@ public class DoacaoService {
 
     public Doacao buscarDoacao(Long id) throws Exception {
         try {
-            if(repositorioDeDoacoes.findByID(id) == null){
+            Optional<Doacao> doacao = repositorioDeDoacoes.findById(id);
+            if(repositorioDeDoacoes.findById(id) == null){
                 throw new DoacaoNaoEncontradaException("Doação não encontrada");
             }
-            Doacao doacao = repositorioDeDoacoes.findByID(id);
-            return doacao;
+
+            return doacao.get();
         } catch (Exception e) {
             throw new Exception("Erro ao buscar doação");
         }
@@ -40,7 +45,7 @@ public class DoacaoService {
 
     public void deletarDoacao(Long id) throws Exception {
         try {
-            if (repositorioDeDoacoes.findByID(id) == null) {
+            if (repositorioDeDoacoes.findById(id) == null) {
                 throw new DoacaoNaoEncontradaException("Doação não encontrada");
             }
         } catch (Exception e) {

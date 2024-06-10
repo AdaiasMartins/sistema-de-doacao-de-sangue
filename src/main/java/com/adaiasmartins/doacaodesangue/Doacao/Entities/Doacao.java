@@ -19,9 +19,6 @@ import java.util.Date;
 @EqualsAndHashCode(of = "id")
 public class Doacao {
 
-    @Autowired
-    private RepositorioDeDoadores repositorioDeDoadores;
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
@@ -31,11 +28,11 @@ public class Doacao {
     private String quantidadeDoada;
     private String local;
 
-    public Doacao(CriarDoacaoDTO data){
-        this.doador = repositorioDeDoadores.findByCpf(data.cpfDoador());
-        this.data = data.data();
-        this.tipoSanguineo = data.tipoSanguineo();
-        this.quantidadeDoada = data.quantidadeDoada();
-        this.local = data.local();
+    public Doacao(Doador doador, Date data, String tipoSanguineo, String quantidadeDoada, String local) {
+        this.doador = doador;
+        this.data = data;
+        this.tipoSanguineo = tipoSanguineo;
+        this.quantidadeDoada = quantidadeDoada;
+        this.local = local;
     }
 }
