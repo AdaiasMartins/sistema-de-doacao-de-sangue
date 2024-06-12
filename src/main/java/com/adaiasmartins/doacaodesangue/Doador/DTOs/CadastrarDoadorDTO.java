@@ -1,9 +1,8 @@
 package com.adaiasmartins.doacaodesangue.Doador.DTOs;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+
+import java.util.Date;
 
 public record CadastrarDoadorDTO(
         @NotBlank
@@ -14,8 +13,8 @@ public record CadastrarDoadorDTO(
         String email,
         @NotBlank @Size(min = 6)
         String senha,
-        @NotBlank @Past
-        String dataNascimento,
+        @NotNull @Past
+        Date dataNascimento,
         @NotBlank @Size(min = 10, max = 10)
         String telefone,
         @NotBlank @Size(min = 2, max = 3)
@@ -26,4 +25,5 @@ public record CadastrarDoadorDTO(
         String cidade,
         @NotBlank
         String estado) {
+
 }

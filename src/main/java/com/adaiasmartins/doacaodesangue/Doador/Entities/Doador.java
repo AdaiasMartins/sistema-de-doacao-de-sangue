@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 
 @Table(name = "doadores")
 @Entity(name = "Doador")
@@ -28,7 +29,7 @@ public class Doador implements UserDetails {
     private String cpf;
     private String email;
     private String senha;
-    private String dataNascimento;
+    private Date dataNascimento;
     private String telefone;
     private String tipoSanguineo;
     private String endereco;
@@ -36,11 +37,11 @@ public class Doador implements UserDetails {
     private String estado;
     private boolean ativo = true;
 
-    public Doador(CadastrarDoadorDTO data){
+    public Doador(CadastrarDoadorDTO data, String senha){
         this.nome = data.nome();
         this.cpf = data.cpf();
         this.email = data.email();
-        this.senha = data.senha();
+        this.senha = senha;
         this.dataNascimento = data.dataNascimento();
         this.telefone = data.telefone();
         this.tipoSanguineo = data.tipoSanguineo();

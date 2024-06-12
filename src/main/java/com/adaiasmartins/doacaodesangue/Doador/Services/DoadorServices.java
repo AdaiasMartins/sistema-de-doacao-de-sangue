@@ -19,16 +19,6 @@ public class DoadorServices {
     @Autowired
     private RepositorioDeDoadores repositorioDeDoadores;
 
-
-    public Doador cadastrarDoador(@Valid CadastrarDoadorDTO data) throws Exception {
-    try {
-        Doador doador = new Doador(data);
-        return repositorioDeDoadores.save(doador);
-    } catch (Exception e){
-        throw new Exception("Erro ao cadastrar doador");
-    }
-    }
-
     public Doador buscarDoador(@Valid String cpf) throws Exception {
         try{
             Doador doador = repositorioDeDoadores.findByCpf(cpf);
