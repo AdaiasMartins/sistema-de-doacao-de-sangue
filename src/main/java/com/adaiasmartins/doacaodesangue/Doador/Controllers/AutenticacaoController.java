@@ -44,9 +44,13 @@ public class AutenticacaoController {
     @PostMapping("/login")
     @Transactional
     public ResponseEntity<TokenDTO> login(@RequestBody @Valid AutenticacaoDTO data) throws Exception {
-        var token = new UsernamePasswordAuthenticationToken(data.cpf(), data.senha());
-        var autenticacao = manager.authenticate(token);
-        var TokenJWT = tokenService.gerarToken((Doador) autenticacao.getPrincipal());
-        return ResponseEntity.ok(new TokenDTO(TokenJWT));
+        try {
+            var token = new UsernamePasswordAuthenticationToken(data.cpf(), data.senha());
+            var autenticacao = manager.authenticate(token);
+            var TokenJWT = tokenService.gerarToken((Doador) autenticacao.getPrincipal());
+            return ResponseEntity.ok(new TokenDTO(TokenJWT));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new TokenDTO("Erro ao autenticar"));
+        }
     }
 }

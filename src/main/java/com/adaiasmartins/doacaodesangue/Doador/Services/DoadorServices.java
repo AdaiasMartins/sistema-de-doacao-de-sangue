@@ -1,6 +1,9 @@
 package com.adaiasmartins.doacaodesangue.Doador.Services;
 
 
+import com.adaiasmartins.doacaodesangue.Doacao.DTOs.CriarDoacaoDTO;
+import com.adaiasmartins.doacaodesangue.Doacao.Entities.Doacao;
+import com.adaiasmartins.doacaodesangue.Doacao.Services.DoacaoService;
 import com.adaiasmartins.doacaodesangue.Doador.DTOs.AtivacaoDTO;
 import com.adaiasmartins.doacaodesangue.Doador.DTOs.AtualizarDoadorDTO;
 import com.adaiasmartins.doacaodesangue.Doador.DTOs.BuscarDoadorDTO;
@@ -18,6 +21,20 @@ import java.util.Optional;
 public class DoadorServices {
     @Autowired
     private RepositorioDeDoadores repositorioDeDoadores;
+
+    private DoacaoService doacaoService;
+
+    public Doacao criarDoacao(CriarDoacaoDTO data) throws Exception {
+        try {
+            Doacao doacao = doacaoService.criarDoacao(data);
+            doacao.getDoador().getDoacoes().add(doacao);
+            return doacao;
+        } catch (Exception e) {
+            throw new Exception("Erro ao criar doação");
+        }
+    }
+
+
 
     public Doador buscarDoador(@Valid String cpf) throws Exception {
         try{

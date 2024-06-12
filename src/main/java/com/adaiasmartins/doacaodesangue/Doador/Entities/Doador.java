@@ -1,5 +1,6 @@
 package com.adaiasmartins.doacaodesangue.Doador.Entities;
 
+import com.adaiasmartins.doacaodesangue.Doacao.Entities.Doacao;
 import com.adaiasmartins.doacaodesangue.Doador.DTOs.CadastrarDoadorDTO;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "doadores")
 @Entity(name = "Doador")
@@ -36,6 +38,8 @@ public class Doador implements UserDetails {
     private String cidade;
     private String estado;
     private boolean ativo = true;
+    @OneToMany(mappedBy = "doador", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Doacao> doacoes;
 
     public Doador(CadastrarDoadorDTO data, String senha){
         this.nome = data.nome();
@@ -49,6 +53,7 @@ public class Doador implements UserDetails {
         this.cidade = data.cidade();
         this.estado = data.estado();
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

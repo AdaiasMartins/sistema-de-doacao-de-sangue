@@ -11,8 +11,6 @@ public record CriarDoacaoDTO(
         String cpfDoador,
         @NotBlank @FutureOrPresent
         Date data,
-        @NotBlank @Size(min = 1, max = 3)
-        String tipoSanguineo,
         @NotBlank
         String quantidadeDoada,
         @NotBlank
