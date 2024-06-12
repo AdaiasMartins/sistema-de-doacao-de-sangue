@@ -29,9 +29,9 @@ public class DoadorServices {
     }
     }
 
-    public Doador buscarDoador(@Valid BuscarDoadorDTO data) throws Exception {
+    public Doador buscarDoador(@Valid String cpf) throws Exception {
         try{
-            Doador doador = repositorioDeDoadores.findByCpf(data.cpf());
+            Doador doador = repositorioDeDoadores.findByCpf(cpf);
             if (doador == null) {
                 throw new DoadorNaoEncontradoException("O cpf informado não está cadastrado");
             }
