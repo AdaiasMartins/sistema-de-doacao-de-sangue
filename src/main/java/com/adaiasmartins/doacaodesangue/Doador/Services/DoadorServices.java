@@ -22,6 +22,7 @@ public class DoadorServices {
     @Autowired
     private RepositorioDeDoadores repositorioDeDoadores;
 
+    @Autowired
     private DoacaoService doacaoService;
 
     public Doacao criarDoacao(CriarDoacaoDTO data) throws Exception {

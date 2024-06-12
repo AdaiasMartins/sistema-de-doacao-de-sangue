@@ -30,6 +30,8 @@ public class AutenticacaoService implements UserDetailsService{
         try {
             if(repositorio.findByCpf(data.cpf()) != null){
                 throw new DoadorExistenteException("O doador informado já existe");
+            } else if (repositorio.findByEmail(data.email()) != null){
+                throw new DoadorExistenteException("O email informado já existe");
             }
             String senha = passwordEncoder.encode(data.senha());
             Doador doador = new Doador(data, senha);
@@ -38,5 +40,6 @@ public class AutenticacaoService implements UserDetailsService{
             throw new Exception(e);
         }
     }
+
 
 }

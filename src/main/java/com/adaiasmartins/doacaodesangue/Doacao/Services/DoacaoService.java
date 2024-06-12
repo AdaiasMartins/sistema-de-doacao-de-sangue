@@ -7,25 +7,28 @@ import com.adaiasmartins.doacaodesangue.Doacao.Repositories.RepositorioDeDoacoes
 import com.adaiasmartins.doacaodesangue.Doador.Entities.Doador;
 import com.adaiasmartins.doacaodesangue.Doador.Exceptions.DoadorNaoEncontradoException;
 import com.adaiasmartins.doacaodesangue.Doador.Repositories.RepositorioDeDoadores;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 public class DoacaoService {
-
+    @Autowired
     private RepositorioDeDoadores repositorioDeDoadores;
+    @Autowired
     private RepositorioDeDoacoes repositorioDeDoacoes;
 
     public Doacao criarDoacao(CriarDoacaoDTO data) throws Exception {
-        try {
-            if(repositorioDeDoadores.findByCpf(data.cpfDoador()) == null){
-                throw new DoadorNaoEncontradoException("Doador não encontrado");
-            }
+        try{
             Doador doador = repositorioDeDoadores.findByCpf(data.cpfDoador());
-            Doacao doacao = new Doacao(doador, data.data(), doador.getTipoSanguineo(), data.quantidadeDoada(), data.local());
+            if (doador == null) {
+                throw new DoadorNaoEncontradoException("O cpf informado não está cadastrado");
+            }
+            Doacao doacao = new Doacao(doador, data);
+            doador.getDoacoes().add(doacao);
             return repositorioDeDoacoes.save(doacao);
-        } catch (Exception e) {
+        } catch (Exception e){
             throw new Exception("Erro ao criar doação");
         }
     }
