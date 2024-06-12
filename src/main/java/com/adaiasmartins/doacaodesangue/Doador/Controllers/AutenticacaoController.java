@@ -3,6 +3,7 @@ package com.adaiasmartins.doacaodesangue.Doador.Controllers;
 import com.adaiasmartins.doacaodesangue.Doador.DTOs.AutenticacaoDTO;
 import com.adaiasmartins.doacaodesangue.Doador.Entities.Doador;
 import com.adaiasmartins.doacaodesangue.Doador.Services.DoadorServices;
+import com.adaiasmartins.doacaodesangue.Doador.Services.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,8 @@ public class AutenticacaoController {
 
     @Autowired
     private AuthenticationManager manager;
+    @Autowired
+    private TokenService tokenService;
 
     @Autowired
     private DoadorServices service;
@@ -27,6 +30,6 @@ public class AutenticacaoController {
     public ResponseEntity<?> login(@RequestBody @Valid AutenticacaoDTO autenticacaoDTO) throws Exception {
         var token = new UsernamePasswordAuthenticationToken(autenticacaoDTO.cpf(), autenticacaoDTO.senha());
         var autenticacao = manager.authenticate(token);
-        return ResponseEntity.ok(autenticacao);
+        return ResponseEntity.ok(tokenService.gerarToken((Doador) autenticacao.getPrincipal()));
     }
 }
