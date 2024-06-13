@@ -16,17 +16,34 @@ public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
 
+    private static final String ISSUER = "auth0";
+
     public String gerarToken(Doador doador){
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
-                    .withIssuer("auth0")
+                    .withIssuer(ISSUER)
                     .withSubject(doador.getCpf())
                     .withExpiresAt(dataExpiracao())
                     .sign(algorithm);
         } catch (JWTCreationException exception){
             throw new RuntimeException("Erro ao gerar token", exception);
         }
+    }
+
+    public String validarToken(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm)
+                    .withIssuer(ISSUER)
+                    .build()
+                    .verify(token)
+                    .getSubject();
+
+        } catch (JWTCreationException e) {
+            return "";
+        }
+
     }
 
     public Instant dataExpiracao(){
