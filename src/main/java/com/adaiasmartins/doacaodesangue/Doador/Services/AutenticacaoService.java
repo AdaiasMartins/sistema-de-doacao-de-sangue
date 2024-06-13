@@ -21,6 +21,9 @@ public class AutenticacaoService implements UserDetailsService{
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EmailService emailService;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repositorio.findByCpf(username);
@@ -35,6 +38,7 @@ public class AutenticacaoService implements UserDetailsService{
             }
             String senha = passwordEncoder.encode(data.senha());
             Doador doador = new Doador(data, senha);
+            emailService.enviarEmail(doador.getEmail(), "Cadastro realizado com sucesso", "Seja bem vindo!");
             return repositorio.save(doador);
         } catch (Exception e){
             throw new Exception(e);

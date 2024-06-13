@@ -25,10 +25,14 @@ public class DoadorServices {
     @Autowired
     private DoacaoService doacaoService;
 
+    @Autowired
+    private EmailService emailService;
+
     public Doacao criarDoacao(CriarDoacaoDTO data) throws Exception {
         try {
             Doacao doacao = doacaoService.criarDoacao(data);
             doacao.getDoador().getDoacoes().add(doacao);
+            emailService.enviarEmail(doacao.getDoador().getEmail(), "Doação realizada com sucesso", "Obrigado por doar sangue!\n" + doacao.getDoador().getNome() +"\n" + doacao.getLocal());
             return doacao;
         } catch (Exception e) {
             throw new Exception("Erro ao criar doação");
